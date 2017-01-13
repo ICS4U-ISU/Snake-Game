@@ -3,8 +3,8 @@ import java.util.Random;
 public class NonMoving {
 	int x, y;
 	boolean collision;
-	int width = 1200; //700 is the width of the game panel
-	int height = 690; //500 is the height of the game panel
+	int width = 1200; //1200 is the width of the game panel
+	int height = 690; //690 is the height of the game panel
 
 	public NonMoving() {
 		Random rand = new Random();

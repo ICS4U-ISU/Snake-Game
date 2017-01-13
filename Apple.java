@@ -2,22 +2,29 @@
 public class Apple extends Food{
 	// Image of apple
 	int currentPoints;
+	int snakeX;
+	int snakeY;
 	
 	public Apple(){
-		points = 20;
 	}
 	
 	public void spawnApple(){
 		randomX();
 		randomY();
-		// if x != where snake is and y != where snake is
-			// draw rat at x and y
+		if (x != snakeX && y != snakeY){
+			//draw apple at x and y
+			// repaint screen
+		} else {
+			randomX();
+			randomY();
+			spawnApple();
+		}
 	}
 	
 	public void appleEat(){
 		// Will only run if collision is true
 		currentPoints = GamePanel.getPoints();
-		GamePanel.setPoints(currentPoints + points);
+		GamePanel.setPoints(currentPoints + pointsApple);
 		spawnApple();
 	}
 }

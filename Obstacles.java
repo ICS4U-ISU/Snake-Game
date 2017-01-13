@@ -11,7 +11,4 @@ public class Obstacles extends NonMoving {
 		return visibility;
 	}
 	
-	
-	
-	
 }
