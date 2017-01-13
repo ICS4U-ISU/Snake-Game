@@ -12,7 +12,7 @@ public class Apple extends Food{
 		randomX();
 		randomY();
 		if (x != snakeX && y != snakeY){
-			//draw apple at x and y
+			// draw apple at x and y
 			// repaint screen
 		} else {
 			randomX();

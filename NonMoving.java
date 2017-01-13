@@ -3,19 +3,19 @@ import java.util.Random;
 public class NonMoving {
 	int x, y;
 	boolean collision;
-	int width = 1200; //1200 is the width of the game panel
-	int height = 690; //690 is the height of the game panel
+	int width = 1200; // 1200 is the width of the game panel
+	int height = 690; // 690 is the height of the game panel
 
 	public NonMoving() {
 		Random rand = new Random();
-		x = rand.nextInt();
-		y = rand.nextInt(500);
+		x = rand.nextInt(width);
+		y = rand.nextInt(height);
 		collision = false;
 	}
 
 	public void randomX() {
 		Random rand = new Random();
-		int x = rand.nextInt(height); //700 is the width of the panel
+		int x = rand.nextInt(width);
 		this.x = x;
 	}
 

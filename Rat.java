@@ -1,7 +1,7 @@
 
 public class Rat extends Food{
-	//Image of rat
-	//Audio of rat
+	// Image of rat
+	// Audio of rat
 	int currentPoints;
 	int snakeX;
 	int snakeY;
@@ -11,7 +11,7 @@ public class Rat extends Food{
 		randomX();
 		randomY();
 		if (x != snakeX && y != snakeY){
-			//draw rat at x and y
+			// draw rat at x and y
 			// repaint screen
 		} else {
 			randomX();
