@@ -1,10 +1,10 @@
 
 public class Walls extends NonMoving {
-	// image of wall
-}
+	String wall = "image of wall";
 
-public void spawnWall(){
-	randomX();
-	randomY();
-	// draw wall at X and Y
+	public void spawnWall() {
+		randomX();
+		randomY();
+		// draw wall at X and Y
+	}
 }

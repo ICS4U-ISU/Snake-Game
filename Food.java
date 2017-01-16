@@ -15,6 +15,7 @@ public class Food extends NonMoving {
 		} else {
 			rat = true;
 		}
+	}
 		
 	public boolean getRat(){
 		return rat;
