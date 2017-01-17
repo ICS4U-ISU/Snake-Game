@@ -23,7 +23,9 @@ public class GamePanel extends JPanel {
 	public static int height = 690;
 	public static int points = 0;
 	public static String score = Integer.toString(points);
-
+//	public static BufferedImage image = null;
+//	image= ImageIO.read(TechISU.class.getResourceAsStream("/Eagle.jpg"));
+			
 	Font myFont = new Font("Serif", Font.BOLD, 50);
 
 
@@ -32,10 +34,20 @@ public class GamePanel extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 
+		
+		
+		
+		
+		
 		Graphics2D g2d = (Graphics2D) g;
-		Image jpgImage;
-		jpgImage = Toolkit.getDefaultToolkit ().getImage ("/Eagle.jpg");
-		g2d.drawImage (jpgImage, 400,50, 100, 100, null);
+		Image Eagle = null;
+		try {
+			Eagle= ImageIO.read(GamePanel.class.getResourceAsStream("/Eagle.jpg"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		g2d.drawImage (Eagle, 400,50, 100, 100, this);
 
 		g2d.setColor(Color.GREEN);
 		g2d.drawRect(30, 90, 1150, 580);//590
@@ -72,7 +84,7 @@ public class GamePanel extends JPanel {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		Image jpgImage;
-		jpgImage = Toolkit.getDefaultToolkit ().getImage ("Eagle.jpg");
+		jpgImage = Toolkit.getDefaultToolkit ().getImage ("Eagle2.jpg");
 
 	}
 	public GamePanel(){
