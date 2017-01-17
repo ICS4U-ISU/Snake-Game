@@ -1,12 +1,14 @@
+import sun.audio.AudioPlayer;
 
 public class Rat extends Food{
 	// Image of rat
 	// Audio of rat
-	int currentPoints;
-	int snakeX;
-	int snakeY;
 	
 	
+	public Rat(int snakeX, int snakeY, int currentPoints) {
+		super(snakeX, snakeY, currentPoints);
+	}
+
 	public void spawnRat(){
 		randomX();
 		randomY();
@@ -20,8 +22,8 @@ public class Rat extends Food{
 		}
 	}
 	
-	public void appleEat(){
-		// Will only run if collision is true
+	public void ratEat(){
+		AudioPlayer.player.start(ratSound);
 		currentPoints = GamePanel.getPoints();
 		GamePanel.setPoints(currentPoints + pointsRat);
 		spawnRat();

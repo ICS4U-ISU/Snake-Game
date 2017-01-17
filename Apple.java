@@ -1,17 +1,16 @@
+import sun.audio.AudioPlayer;
 
-public class Apple extends Food{
+public class Apple extends Food {
 	// Image of apple
-	int currentPoints;
-	int snakeX;
-	int snakeY;
-	
-	public Apple(){
+
+	public Apple(int snakeX, int snakeY, int currentPoints) {
+		super(snakeX, snakeY, currentPoints);
 	}
-	
-	public void spawnApple(){
+
+	public void spawnApple() {
 		randomX();
 		randomY();
-		if (x != snakeX && y != snakeY){
+		if (x != snakeX && y != snakeY) {
 			// draw apple at x and y
 			// repaint screen
 		} else {
@@ -20,9 +19,9 @@ public class Apple extends Food{
 			spawnApple();
 		}
 	}
-	
-	public void appleEat(){
-		// Will only run if collision is true
+
+	public void appleEat() {
+		AudioPlayer.player.start(appleSound);
 		currentPoints = GamePanel.getPoints();
 		GamePanel.setPoints(currentPoints + pointsApple);
 		spawnApple();
