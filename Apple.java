@@ -1,5 +1,6 @@
 import sun.audio.AudioPlayer;
 
+@SuppressWarnings("serial")
 public class Apple extends Food {
 	// Image of apple
 

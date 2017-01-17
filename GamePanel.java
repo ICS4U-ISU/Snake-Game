@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "unused" })
 public class GamePanel extends JPanel {
 
 
