@@ -1,21 +1,21 @@
 import java.util.Random;
 
-public class NonMoving {
+public class NonMoving extends GamePanel {
 	int x, y;
 	boolean collision;
-	int width = 1200; // 1200 is the width of the game panel
-	int height = 690; // 690 is the height of the game panel
+	//int width = 1200; //700 is the width of the game panel
+	//int height = 690; //500 is the height of the game panel
 
 	public NonMoving() {
 		Random rand = new Random();
-		x = rand.nextInt(width);
-		y = rand.nextInt(height);
+		x = rand.nextInt();
+		y = rand.nextInt(500);
 		collision = false;
 	}
 
 	public void randomX() {
 		Random rand = new Random();
-		int x = rand.nextInt(width);
+		int x = rand.nextInt(height); //700 is the width of the panel
 		this.x = x;
 	}
 
