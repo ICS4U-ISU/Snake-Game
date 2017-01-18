@@ -19,7 +19,7 @@ public class Food extends NonMoving {
 		super(snakeX, snakeY, currentPoints);
 		try {
 			AudioStream appleSound;
-			appleSound = new AudioStream(new FileInputStream("H:/git/Snake-Game/SnakeGame/src/cartoon001.wav"));
+			appleSound = new AudioStream(new FileInputStream("Apple Sound.wav"));
 			this.appleSound = appleSound;
 		} catch (Exception ex) {
 			System.out.println("Error with playing sound.");
@@ -27,7 +27,7 @@ public class Food extends NonMoving {
 		}
 		try {
 			AudioStream ratSound;
-			ratSound = new AudioStream(new FileInputStream("H:/git/Snake-Game/SnakeGame/src/cartoon001.wav"));
+			ratSound = new AudioStream(new FileInputStream("Rat Sound.wav"));
 			this.ratSound = ratSound;
 		} catch (Exception ex) {
 			System.out.println("Error with playing sound.");
