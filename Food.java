@@ -11,8 +11,8 @@ public class Food extends NonMoving {
 	boolean rat;
 	AudioStream appleSound;
 	AudioStream ratSound;
-	int snakeX;
-	int snakeY;
+	static int snakeX;
+	static int snakeY;
 	int currentPoints;
 
 	public Food(int snakeX, int snakeY, int currentPoints) {

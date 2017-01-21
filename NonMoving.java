@@ -2,13 +2,14 @@ import java.util.Random;
 
 @SuppressWarnings("serial")
 public class NonMoving extends GamePanel {
-	int x, y;
+	static int x;
+	static int y;
 	boolean collision;
 	int snakeX;
 	int snakeY;
 	int currentPoints;
-	// int width = 1200; //700 is the width of the game panel
-	// int height = 690; //500 is the height of the game panel
+	int width = 1200; //700 is the width of the game panel
+	static int height = 690; //500 is the height of the game panel
 
 	public NonMoving(int snakeX, int snakeY, int currentPoints) {
 		Random rand = new Random();
@@ -20,16 +21,16 @@ public class NonMoving extends GamePanel {
 		this.currentPoints = currentPoints;
 	}
 
-	public void randomX() {
+	public static void randomX() {
 		Random rand = new Random();
 		int x = rand.nextInt(height); // 700 is the width of the panel
-		this.x = x;
+		NonMoving.x = x;
 	}
 
-	public void randomY() {
+	public static void randomY() {
 		Random rand = new Random();
 		int y = rand.nextInt(height);
-		this.y = y;
+		NonMoving.x = y;
 	}
 
 	public int getX() {
@@ -41,10 +42,10 @@ public class NonMoving extends GamePanel {
 	}
 
 	public void setX(int x) {
-		this.x = x;
+		NonMoving.x = x;
 	}
 
 	public void setY(int y) {
-		this.y = y;
+		NonMoving.y = y;
 	}
 }

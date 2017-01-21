@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+@SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
 
     private final int width = 1400;
@@ -64,13 +65,13 @@ public class Board extends JPanel implements ActionListener {
 
     private void images () {
 
-        ImageIcon iid = new ImageIcon("C:/Users/323016139/workspace/SnakeGame/src/dot.png");
+        ImageIcon iid = new ImageIcon("C:/Users/ajayg/git/Snake-Game/dot.png");
         ball = iid.getImage();
 
-        ImageIcon iia = new ImageIcon("C:/Users/323016139/workspace/SnakeGame/src/apple.png");
+        ImageIcon iia = new ImageIcon("C:/Users/ajayg/git/Snake-Game/apple.png");
         apple = iia.getImage();
 
-        ImageIcon iih = new ImageIcon("C:/Users/323016139/workspace/SnakeGame/src/head.png");
+        ImageIcon iih = new ImageIcon("C:/Users/ajayg/git/Snake-Game/head.png");
         head = iih.getImage();
     }
    
@@ -104,7 +105,7 @@ public class Board extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
 		Image Eagle = null;
 		try {
-			Eagle = ImageIO.read(Board.class.getResourceAsStream("eagle.jpg"));
+			Eagle = ImageIO.read(Board.class.getResourceAsStream("/eagle.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
