@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -20,89 +22,91 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
 
-    private final int width = 1400;
-    private final int height = 750;
-    private final int appleSize = 50;
-    private final int maxBody = 900;
-    private final int randApple = 10;
-    private final int speed = 140;
+	private final int width = 1400;
+	private final int height = 750;
+	private final int appleSize = 50;
+	private final int maxBody = 900;
+	private final int randApple = 10;
+	private final int speed = 140;
 
-    private final int x[] = new int[maxBody];
-    private final int y[] = new int[maxBody];
+	private final int x[] = new int[maxBody];
+	private final int y[] = new int[maxBody];
 
-    private int dots;
-    private int appleX;
-    private int appleY;
+	private int dots;
+	private int appleX;
+	private int appleY;
 
-    private boolean leftKey = false;
-    private boolean rightKey = true;
-    private boolean upKey = false;
-    private boolean downKey = false;
-    private boolean inGame = true;
+	private boolean leftKey = false;
+	private boolean rightKey = true;
+	private boolean upKey = false;
+	private boolean downKey = false;
+	private boolean inGame = true;
 
-    private Timer timer;
-    private Image ball;
-    private Image apple;
-    private Image head;
-    private Image eagle;
+	private Timer timer;
+	private Image ball;
+	private Image apple;
+	private Image head;
+	private Image eagle;
 
 	public static int points = 0;
 	public static String score = Integer.toString(points);
-	//	public static BufferedImage image = null;
-	//	image= ImageIO.read(TechISU.class.getResourceAsStream("/Eagle.jpg"));
+	// public static BufferedImage image = null;
+	// image= ImageIO.read(TechISU.class.getResourceAsStream("/Eagle.jpg"));
 
 	Font myFont = new Font("Serif", Font.BOLD, 50);
-    public Board() {
 
-        addKeyListener(new TAdapter());
-        setBackground(Color.BLACK);
-        setFocusable(true);
+	public Board() {
 
-        setPreferredSize(new Dimension(width, height));
-        images ();
-        initGame();
-    }
+		addKeyListener(new TAdapter());
+		setBackground(Color.BLACK);
+		setFocusable(true);
 
-    private void images () {
+		setPreferredSize(new Dimension(width, height));
+		images();
+		initGame();
+	}
 
-        ImageIcon iid = new ImageIcon("C:/Users/ajayg/git/Snake-Game/dot.png");
-        ball = iid.getImage();
+	private void images() {
 
-        ImageIcon iia = new ImageIcon("C:/Users/ajayg/git/Snake-Game/apple.png");
-        apple = iia.getImage();
+		try {
+			ball = ImageIO.read(Board.class.getResourceAsStream("/dot.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			apple = ImageIO.read(Board.class.getResourceAsStream("/apple.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			head = ImageIO.read(Board.class.getResourceAsStream("/head.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-        ImageIcon iih = new ImageIcon("C:/Users/ajayg/git/Snake-Game/head.png");
-        head = iih.getImage();
-    }
-   
-   
+	private void initGame() {
 
+		dots = 3;
 
-    private void initGame() {
+		for (int z = 0; z < dots; z++) {
+			x[z] = 50 - z * 10;
+			y[z] = 50;
+		}
 
-        dots = 3;
+		appleRandomizer();
 
-        for (int z = 0; z < dots; z++) {
-            x[z] = 50 - z * 10;
-            y[z] = 50;
-        }
+		timer = new Timer(speed, this);
+		timer.start();
+	}
 
-        appleRandomizer();
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
-        timer = new Timer(speed, this);
-        timer.start();
-    }
+		drawing(g);
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        drawing (g);
-       
-        
-        
-        
-        Graphics2D g2d = (Graphics2D) g;
+		Graphics2D g2d = (Graphics2D) g;
 		Image Eagle = null;
 		try {
 			Eagle = ImageIO.read(Board.class.getResourceAsStream("/eagle.jpg"));
@@ -126,173 +130,164 @@ public class Board extends JPanel implements ActionListener {
 		// (?,?,width of line, angle)
 		g2d.drawLine(30, 530, 30, 670);
 		g2d.drawLine(1180, 530, 1180, 670);
-        
-        
-        g.setColor(Color.WHITE);
+
+		g.setColor(Color.WHITE);
 		g.setFont(myFont);
 		g.drawString("Snake Game: ", 130, 60);
 		g.drawString("Score: ", 800, 60);
 		g.drawString(score, 950, 60);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    }
-    
-    private void drawing (Graphics g) {
-        
-        if (inGame) {
 
-            g.drawImage(apple, appleX, appleY, this);
+	}
 
-            for (int z = 0; z < dots; z++) {
-                if (z == 0) {
-                    g.drawImage(head, x[z], y[z], this);
-                } else {
-                    g.drawImage(ball, x[z], y[z], this);
-                }
-            }
+	private void drawing(Graphics g) {
 
-            Toolkit.getDefaultToolkit().sync();
+		if (inGame) {
 
-        } else {
+			g.drawImage(apple, appleX, appleY, this);
 
-            gameOver(g);
-        }        
-    }
+			for (int z = 0; z < dots; z++) {
+				if (z == 0) {
+					g.drawImage(head, x[z], y[z], this);
+				} else {
+					g.drawImage(ball, x[z], y[z], this);
+				}
+			}
 
-    private void gameOver(Graphics g) {
-        
-        String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = getFontMetrics(small);
+			Toolkit.getDefaultToolkit().sync();
 
-        g.setColor(Color.BLACK);
-        g.setFont(small);
-        g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
-    }
+		} else {
 
-    private void apple () {
+			gameOver(g);
+		}
+	}
 
-        if ((x[0] == appleX) && (y[0] == appleY)) {
+	private void gameOver(Graphics g) {
 
-            dots++;
-            appleRandomizer();
-        }
-    }
+		String msg = "Game Over";
+		Font small = new Font("Helvetica", Font.BOLD, 14);
+		FontMetrics metr = getFontMetrics(small);
 
-    private void move() {
+		g.setColor(Color.BLACK);
+		g.setFont(small);
+		g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
+	}
 
-        for (int z = dots; z > 0; z--) {
-            x[z] = x[(z - 1)];
-            y[z] = y[(z - 1)];
-        }
+	private void apple() {
 
-        if (leftKey) {
-            x[0] -= appleSize;
-        }
+		if ((x[0] == appleX) && (y[0] == appleY)) {
 
-        if (rightKey) {
-            x[0] += appleSize;
-        }
+			dots++;
+			appleRandomizer();
+		}
+	}
 
-        if (upKey) {
-            y[0] -= appleSize;
-        }
+	private void move() {
 
-        if (downKey) {
-            y[0] += appleSize;
-        }
-    }
+		for (int z = dots; z > 0; z--) {
+			x[z] = x[(z - 1)];
+			y[z] = y[(z - 1)];
+		}
 
-    private void collision () {
+		if (leftKey) {
+			x[0] -= appleSize;
+		}
 
-        for (int z = dots; z > 0; z--) {
+		if (rightKey) {
+			x[0] += appleSize;
+		}
 
-            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-                inGame = false;
-            }
-        }
+		if (upKey) {
+			y[0] -= appleSize;
+		}
 
-        if (y[0] >= height) {
-            inGame = false;
-        }
+		if (downKey) {
+			y[0] += appleSize;
+		}
+	}
 
-        if (y[0] < 0) {
-            inGame = false;
-        }
+	private void collision() {
 
-        if (x[0] >= width) {
-            inGame = false;
-        }
+		for (int z = dots; z > 0; z--) {
 
-        if (x[0] < 0) {
-            inGame = false;
-        }
-        
-        if(!inGame) {
-            timer.stop();
-        }
-    }
+			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+				inGame = false;
+			}
+		}
 
-    private void appleRandomizer() {
+		if (y[0] >= height) {
+			inGame = false;
+		}
 
-        int r = (int) (Math.random() * randApple);
-        appleX = ((r * appleSize));
+		if (y[0] < 0) {
+			inGame = false;
+		}
 
-        r = (int) (Math.random() * randApple);
-        appleY = ((r * appleSize));
-     
-    }
+		if (x[0] >= width) {
+			inGame = false;
+		}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+		if (x[0] < 0) {
+			inGame = false;
+		}
 
-        if (inGame) {
+		if (!inGame) {
+			timer.stop();
+		}
+	}
 
-            apple ();
-            collision ();
-            move();
-        }
+	private void appleRandomizer() {
 
-        repaint();
-    }
+		int r = (int) (Math.random() * randApple);
+		appleX = ((r * appleSize));
 
-    private class TAdapter extends KeyAdapter {
+		r = (int) (Math.random() * randApple);
+		appleY = ((r * appleSize));
 
-        @Override
-        public void keyPressed(KeyEvent e) {
+	}
 
-            int key = e.getKeyCode();
+	@Override
+	public void actionPerformed(ActionEvent e) {
 
-            if ((key == KeyEvent.VK_LEFT) && (!rightKey)) {
-                leftKey = true;
-                upKey = false;
-                downKey = false;
-            }
+		if (inGame) {
 
-            if ((key == KeyEvent.VK_RIGHT) && (!leftKey)) {
-                rightKey = true;
-                upKey = false;
-                downKey = false;
-            }
+			apple();
+			collision();
+			move();
+		}
 
-            if ((key == KeyEvent.VK_UP) && (!downKey)) {
-                upKey = true;
-                rightKey = false;
-                leftKey = false;
-            }
+		repaint();
+	}
 
-            if ((key == KeyEvent.VK_DOWN) && (!upKey)) {
-                downKey = true;
-                rightKey = false;
-                leftKey = false;
-            }
-        }
-    }
+	private class TAdapter extends KeyAdapter {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+
+			int key = e.getKeyCode();
+
+			if ((key == KeyEvent.VK_LEFT) && (!rightKey)) {
+				leftKey = true;
+				upKey = false;
+				downKey = false;
+			}
+
+			if ((key == KeyEvent.VK_RIGHT) && (!leftKey)) {
+				rightKey = true;
+				upKey = false;
+				downKey = false;
+			}
+
+			if ((key == KeyEvent.VK_UP) && (!downKey)) {
+				upKey = true;
+				rightKey = false;
+				leftKey = false;
+			}
+
+			if ((key == KeyEvent.VK_DOWN) && (!upKey)) {
+				downKey = true;
+				rightKey = false;
+				leftKey = false;
+			}
+		}
+	}
 }
