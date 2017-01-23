@@ -47,14 +47,16 @@ public class Board extends JPanel implements ActionListener {
 	private Image apple;
 	private Image head;
 	private Image eagle;
-
-	public static int points = 0;
+public int xy = 0;
+	public static int points = -50;
 	public static String score = Integer.toString(points);
 	// public static BufferedImage image = null;
 	// image= ImageIO.read(TechISU.class.getResourceAsStream("/Eagle.jpg"));
 
 	Font myFont = new Font("Serif", Font.BOLD, 50);
 
+	
+	
 	public Board() {
 
 		addKeyListener(new TAdapter());
@@ -62,9 +64,13 @@ public class Board extends JPanel implements ActionListener {
 		setFocusable(true);
 
 		setPreferredSize(new Dimension(width, height));
+		
 		images();
 		initGame();
+		
+		
 	}
+
 
 	private void images() {
 
@@ -166,11 +172,29 @@ public class Board extends JPanel implements ActionListener {
 		String msg = "Game Over";
 		Font small = new Font("Helvetica", Font.BOLD, 14);
 		FontMetrics metr = getFontMetrics(small);
-
-		g.setColor(Color.BLACK);
+		
+		g.setColor(Color.WHITE);
 		g.setFont(small);
-		g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
+		g.drawString(msg, 600, 350);
+		;
+		
+		//g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
+		
+		timer.start();
+		if (timer.equals(0))
+		{
+			g.setColor(Color.BLACK);
+			g.drawString(msg, 600, 350);
+			repaint();	
+		}
+	
+		
+//		g.drawString("Please enter your name", 600, 350);
+		
+		
 	}
+	
+	
 
 	private void apple() {
 
@@ -206,8 +230,8 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void collision() {
-
-		points = points + 50;
+		
+		
 		for (int z = dots; z > 0; z--) {
 
 			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
@@ -245,6 +269,10 @@ public class Board extends JPanel implements ActionListener {
 
 		r = (int) (Math.random() * randApple);
 		appleY = ((r * appleSize));
+		
+		points = points + 50;
+		score = Integer.toString(points);
+		repaint();
 
 	}
 
