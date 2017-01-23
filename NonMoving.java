@@ -1,7 +1,11 @@
+import java.io.FileInputStream;
 import java.util.Random;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 @SuppressWarnings("serial")
-public class NonMoving extends GamePanel {
+public class NonMoving extends Board {
 	static int x;
 	static int y;
 	boolean collision;
@@ -20,17 +24,26 @@ public class NonMoving extends GamePanel {
 		this.snakeY = snakeY;
 		this.currentPoints = currentPoints;
 	}
-
-	public static void randomX() {
-		Random rand = new Random();
-		int x = rand.nextInt(height); // 700 is the width of the panel
-		NonMoving.x = x;
+	public static void appleRandomizer() {
+		try {
+			appleSound = new AudioStream(new FileInputStream("H:/git/Snake-Game/Apple Sound.wav"));
+		} catch (Exception ex) {
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace();	
+		}
+		AudioPlayer.player.start(appleSound);
 	}
 
-	public static void randomY() {
+	public static int randomX() {
+		Random rand = new Random();
+		int x = rand.nextInt(height); // 700 is the width of the panel
+		return x;
+	}
+
+	public static int randomY() {
 		Random rand = new Random();
 		int y = rand.nextInt(height);
-		NonMoving.x = y;
+		return y;
 	}
 
 	public int getX() {

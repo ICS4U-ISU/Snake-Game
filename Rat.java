@@ -24,8 +24,8 @@ public class Rat extends Food {
 
 	public void ratEat() {
 		AudioPlayer.player.start(ratSound);
-		currentPoints = GamePanel.getPoints();
-		GamePanel.setPoints(currentPoints + pointsRat);
+		currentPoints = Board.getPoints();
+		Board.setPoints(currentPoints + pointsRat);
 		spawnRat();
 	}
 }

@@ -12,12 +12,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
@@ -47,16 +51,18 @@ public class Board extends JPanel implements ActionListener {
 	private Image apple;
 	private Image head;
 	private Image eagle;
-public int xy = 0;
-	public static int points = -50;
+	
+	static AudioStream appleSound;
+	static AudioStream ratSound;
+	
+
+	public static int points = 0;
 	public static String score = Integer.toString(points);
 	// public static BufferedImage image = null;
 	// image= ImageIO.read(TechISU.class.getResourceAsStream("/Eagle.jpg"));
 
 	Font myFont = new Font("Serif", Font.BOLD, 50);
 
-	
-	
 	public Board() {
 
 		addKeyListener(new TAdapter());
@@ -64,28 +70,24 @@ public int xy = 0;
 		setFocusable(true);
 
 		setPreferredSize(new Dimension(width, height));
-		
 		images();
 		initGame();
-		
-		
 	}
-
 
 	private void images() {
 
 		try {
-			ball = ImageIO.read(Board.class.getResourceAsStream("/dot.jpg"));
+			ball = ImageIO.read(Board.class.getResourceAsStream("/dot.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			apple = ImageIO.read(Board.class.getResourceAsStream("/Apple.jpg"));
+			apple = ImageIO.read(Board.class.getResourceAsStream("/apple.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			head = ImageIO.read(Board.class.getResourceAsStream("/head.jpg"));
+			head = ImageIO.read(Board.class.getResourceAsStream("/head.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +102,7 @@ public int xy = 0;
 			y[z] = 50;
 		}
 
-		appleRandomizer();
+		NonMoving.appleRandomizer();
 
 		timer = new Timer(speed, this);
 		timer.start();
@@ -115,27 +117,27 @@ public int xy = 0;
 		Graphics2D g2d = (Graphics2D) g;
 		Image Eagle = null;
 		try {
-			Eagle = ImageIO.read(Board.class.getResourceAsStream("/Eagle2.jpg"));
+			Eagle = ImageIO.read(Board.class.getResourceAsStream("/eagle.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image Snake = null;
 		try {
-			Snake = ImageIO.read(Board.class.getResourceAsStream("/Snake.jpg"));
+			Snake = ImageIO.read(Board.class.getResourceAsStream("/snake.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		g2d.drawImage(Eagle, 30, 530, 100, 100, this);
+		g2d.drawImage(Eagle, 400, 50, 100, 100, this);
 		g2d.drawImage(Snake, 30, 10, 80, 80, this);
 
 		g2d.setColor(Color.GREEN);
-		g2d.drawRect(30, 90, 1225, 620);// 590
+		g2d.drawRect(30, 90, 1150, 580);// 590
 		g2d.setColor(Color.RED);
 
 		// (?,?,width of line, angle)
-		g2d.drawLine(30, 530, 30, 650);
-		g2d.drawLine(1255, 530, 1255, 650);
+		g2d.drawLine(30, 530, 30, 670);
+		g2d.drawLine(1180, 530, 1180, 670);
 
 		g.setColor(Color.WHITE);
 		g.setFont(myFont);
@@ -172,36 +174,17 @@ public int xy = 0;
 		String msg = "Game Over";
 		Font small = new Font("Helvetica", Font.BOLD, 14);
 		FontMetrics metr = getFontMetrics(small);
-		
-		g.setColor(Color.WHITE);
+
+		g.setColor(Color.BLACK);
 		g.setFont(small);
-		g.drawString(msg, 600, 350);
-		;
-		
-		//g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
-		
-		timer.start();
-		if (timer.equals(0))
-		{
-			g.setColor(Color.BLACK);
-			g.drawString(msg, 600, 350);
-			repaint();	
-		}
-	
-		
-//		g.drawString("Please enter your name", 600, 350);
-		
-		
+		g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
 	}
-	
-	
 
 	private void apple() {
 
-		if ((x[0] == appleX) && (y[0] == appleY)) {
-
+		if ((x[0] == NonMoving.randomX()) && (y[0] == NonMoving.randomY())) {
 			dots++;
-			appleRandomizer();
+			NonMoving.appleRandomizer();
 		}
 	}
 
@@ -230,8 +213,7 @@ public int xy = 0;
 	}
 
 	private void collision() {
-		
-		
+
 		for (int z = dots; z > 0; z--) {
 
 			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
@@ -258,29 +240,12 @@ public int xy = 0;
 		if (!inGame) {
 			timer.stop();
 		}
-		
-		
-	}
-
-	private void appleRandomizer() {
-
-		int r = (int) (Math.random() * randApple);
-		appleX = ((r * appleSize));
-
-		r = (int) (Math.random() * randApple);
-		appleY = ((r * appleSize));
-		
-		points = points + 50;
-		score = Integer.toString(points);
-		repaint();
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		if (inGame) {
-
 			apple();
 			collision();
 			move();
@@ -320,5 +285,17 @@ public int xy = 0;
 				leftKey = false;
 			}
 		}
+	}
+
+	public static void setPoints(int pointsToAdd) {
+		points = points + pointsToAdd;
+	}
+
+	public static int getPoints() {
+		return points;
+	}
+	
+	public void playAppleSound(){
+		AudioPlayer.player.start(appleSound);
 	}
 }

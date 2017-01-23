@@ -23,8 +23,8 @@ public class Apple extends Food {
 
 	public void appleEat() {
 		AudioPlayer.player.start(appleSound);
-		currentPoints = GamePanel.getPoints();
-		GamePanel.setPoints(currentPoints + pointsApple);
+		currentPoints = Board.getPoints();
+		Board.setPoints(currentPoints + pointsApple);
 		spawnApple();
 	}
 }
