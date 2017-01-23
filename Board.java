@@ -69,17 +69,17 @@ public class Board extends JPanel implements ActionListener {
 	private void images() {
 
 		try {
-			ball = ImageIO.read(Board.class.getResourceAsStream("/dot.png"));
+			ball = ImageIO.read(Board.class.getResourceAsStream("/dot.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			apple = ImageIO.read(Board.class.getResourceAsStream("/apple.png"));
+			apple = ImageIO.read(Board.class.getResourceAsStream("/Apple.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			head = ImageIO.read(Board.class.getResourceAsStream("/head.png"));
+			head = ImageIO.read(Board.class.getResourceAsStream("/head.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -109,27 +109,27 @@ public class Board extends JPanel implements ActionListener {
 		Graphics2D g2d = (Graphics2D) g;
 		Image Eagle = null;
 		try {
-			Eagle = ImageIO.read(Board.class.getResourceAsStream("/eagle.jpg"));
+			Eagle = ImageIO.read(Board.class.getResourceAsStream("/Eagle2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image Snake = null;
 		try {
-			Snake = ImageIO.read(Board.class.getResourceAsStream("/snake.jpg"));
+			Snake = ImageIO.read(Board.class.getResourceAsStream("/Snake.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		g2d.drawImage(Eagle, 400, 50, 100, 100, this);
+		g2d.drawImage(Eagle, 30, 530, 100, 100, this);
 		g2d.drawImage(Snake, 30, 10, 80, 80, this);
 
 		g2d.setColor(Color.GREEN);
-		g2d.drawRect(30, 90, 1150, 580);// 590
+		g2d.drawRect(30, 90, 1225, 620);// 590
 		g2d.setColor(Color.RED);
 
 		// (?,?,width of line, angle)
-		g2d.drawLine(30, 530, 30, 670);
-		g2d.drawLine(1180, 530, 1180, 670);
+		g2d.drawLine(30, 530, 30, 650);
+		g2d.drawLine(1255, 530, 1255, 650);
 
 		g.setColor(Color.WHITE);
 		g.setFont(myFont);
@@ -207,6 +207,7 @@ public class Board extends JPanel implements ActionListener {
 
 	private void collision() {
 
+		points = points + 50;
 		for (int z = dots; z > 0; z--) {
 
 			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
@@ -233,6 +234,8 @@ public class Board extends JPanel implements ActionListener {
 		if (!inGame) {
 			timer.stop();
 		}
+		
+		
 	}
 
 	private void appleRandomizer() {
