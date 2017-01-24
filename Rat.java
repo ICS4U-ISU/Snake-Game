@@ -1,5 +1,8 @@
 import java.io.FileInputStream;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
@@ -13,18 +16,20 @@ public class Rat extends Food {
 
 	public static void ratEat() {
 		try {
-			ratSound = new AudioStream(new FileInputStream("C:/Users/ajayg/git/Snake-Game/Rat Sound.wav"));
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(Rat.class.getResource("Rat Sound.wav"));
+			ratSound = AudioSystem.getClip();
+			ratSound.open(audioIn);
 		} catch (Exception ex) {
 			System.out.println("Error with playing sound.");
 			ex.printStackTrace();
 		}
 		if (firstPlayed == true) {
-			AudioPlayer.player.start(ratSound);
+			ratSound.start();
 		} else {
 			firstPlayed = true;
 		}
 		currentPoints = Board.getPoints();
-		Board.setPoints(currentPoints + pointsRat);
+		Board.setPoints(currentPoints + pointsApple);
 		ratRandomizer();
 	}
 

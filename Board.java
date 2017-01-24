@@ -102,7 +102,7 @@ public class Board extends JPanel implements ActionListener {
 			x[z] = 50 - z * 10;
 			y[z] = 50;
 		}
-
+		
 		Apple.appleEat();
 		Rat.ratEat();
 

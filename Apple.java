@@ -1,7 +1,5 @@
-import java.io.FileInputStream;
-
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 @SuppressWarnings("serial")
 public class Apple extends Food {
@@ -13,13 +11,15 @@ public class Apple extends Food {
 
 	public static void appleEat() {
 		try {
-			appleSound = new AudioStream(new FileInputStream("C:/Users/ajayg/git/Snake-Game/Apple Sound.wav"));
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(Apple.class.getResource("Apple Sound.wav"));
+			appleSound = AudioSystem.getClip();
+			appleSound.open(audioIn);
 		} catch (Exception ex) {
 			System.out.println("Error with playing sound.");
 			ex.printStackTrace();
 		}
 		if (firstPlayed == true) {
-			AudioPlayer.player.start(appleSound);
+			appleSound.start();
 		} else {
 			firstPlayed = true;
 		}
