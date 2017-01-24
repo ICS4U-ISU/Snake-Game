@@ -1,0 +1,407 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import sun.audio.AudioStream;
+
+@SuppressWarnings("serial")
+public class Board extends JPanel implements ActionListener {
+
+	// screen dimensions
+	private final int width = 1400;
+	private final int height = 750;
+	
+	// size of snake's food
+	private final int foodSize = 50;
+	// max number of snake segments??
+	private final int maxBody = 900;
+	// speed of snake
+	private final int speed = 140;
+	// speef of eagle
+	private final int eSpeed = 200;
+
+	private final int x[] = new int[maxBody];
+	private final int y[] = new int[maxBody];
+
+	private int dots;			// snake segments
+	private static int appleX;	// apple x-coordinate
+	private static int appleY;	// apple y-coordinate
+	private static int ratX;	// rat x-coordinate
+	private static int ratY;	// rate y-coordinate
+	private static int eagleX;  // eagle x-coordinate
+	private static int eagleY;	// eagle y-coordinate
+
+	// key board listeners
+	private boolean leftKey = false;
+	private boolean rightKey = true;
+	private boolean upKey = false;
+	private boolean downKey = false;
+	
+	// flag to check if game is running
+	private boolean inGame = true;
+	private boolean ratSpawn = false;
+
+	private Timer timer;	// gamer timer
+	private Image ball;		// snake body	
+	private Image apple;	// snake's food
+	private Image head;		// snake head
+	private Image eagle;	// eagle
+	private Image rat;		// the rat
+
+	static AudioStream appleSound;	// sound made when apple is eaten
+	static AudioStream ratSound;	// sound made when rat is eaten
+
+	public static int points = 0;	// number of earned points
+	public static String score = Integer.toString(points);	// displaying the score
+
+	Font myFont = new Font("Serif", Font.BOLD, 50);
+
+	public Board() {
+
+		addKeyListener(new TAdapter());
+		// background color
+		setBackground(Color.BLACK);
+		setFocusable(true);
+		// board dimensions
+		setPreferredSize(new Dimension(width, height));
+		images();
+		initGame();
+	}
+
+	private void images() {
+
+		try {
+			// drawing snake body image 
+			ball = ImageIO.read(Board.class.getResourceAsStream("/dot.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			// drawing apple image
+			apple = ImageIO.read(Board.class.getResourceAsStream("/apple.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			// drawing snake head image
+			head = ImageIO.read(Board.class.getResourceAsStream("/head.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			// drawing rat image
+			rat = ImageIO.read(Board.class.getResourceAsStream("/rat.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void initGame() {
+		// number of segments the snake is made of - by default
+		dots = 3;
+		
+		for (int z = 0; z < dots; z++) {
+			x[z] = 50 - z * 10;
+			y[z] = 50;
+		}
+		
+		Apple.appleEat();
+		Rat.ratEat();
+		// timer
+		timer = new Timer(speed, this);
+		timer.start();
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		drawing(g);
+
+		Graphics2D g2d = (Graphics2D) g;
+		Image Eagle = null;
+		try {
+			Eagle = ImageIO.read(Board.class.getResourceAsStream("/eagle.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Image Snake = null;
+		try {
+			Snake = ImageIO.read(Board.class.getResourceAsStream("/snake.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		g2d.drawImage(Eagle, 1220, 100, 100, 100, this); // top eagle
+		g2d.drawImage(Eagle, 1220, 550, 100, 100, this); // bottom eagle
+		
+		g2d.drawImage(Snake, 30, 10, 80, 80, this);	//snake location
+
+		g2d.setColor(Color.GREEN);
+		g2d.drawRect(30, 90, 1150, 580); // 590
+		g2d.setColor(Color.RED);
+
+		// (?, ?, width of line, angle)
+		g2d.drawLine(30, 530, 30, 670);
+		g2d.drawLine(1180, 530, 1180, 670);
+
+		g.setColor(Color.WHITE);
+		g.setFont(myFont);
+		g.drawString("Snake Game: ", 130, 60);
+		g.drawString("Score: ", 800, 60);
+		g.drawString(score, 950, 60);
+
+	}
+
+	private void drawing(Graphics g) {
+
+		if (inGame) {
+
+			g.drawImage(apple, appleX, appleY, this);
+
+			if (ratSpawn == true) {
+				g.drawImage(rat, ratX, ratY, this);
+			}
+
+			for (int z = 0; z < dots; z++) {
+				if (z == 0) {
+					g.drawImage(head, x[z], y[z], this);
+				} else {
+					g.drawImage(ball, x[z], y[z], this);
+				}
+			}
+			
+			Toolkit.getDefaultToolkit().sync();
+
+		} else {
+
+			gameOver(g);
+		}
+	}
+
+	private void gameOver(Graphics g) {
+
+		String msg = "Game Over";
+		Font small = new Font("Helvetica", Font.BOLD, 14);
+		FontMetrics metr = getFontMetrics(small);
+
+		g.setColor(Color.BLACK);
+		g.setFont(small);
+		g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
+	}
+
+	private void eat() {
+		if ((x[0] == appleX) && (y[0] == appleY)) {
+			dots++;
+			Apple.appleEat();
+			Random rand = new Random();
+			int ratChance = rand.nextInt(100);
+			if (ratChance < 21) {
+				ratSpawn = true;
+			} else {
+				if (ratSpawn == true) {
+					ratSpawn = true;
+				} else {
+					ratSpawn = false;
+				}
+			}
+		}
+		if ((x[0] == ratX) && (y[0] == ratY && ratSpawn == true)) {
+			dots++;
+			Rat.ratEat();
+			ratSpawn = false;
+		}
+	}
+
+	private void move() {
+
+		for (int z = dots; z > 0; z--) {
+			x[z] = x[(z - 1)];
+			y[z] = y[(z - 1)];
+		}
+
+		if (leftKey) {
+			x[0] -= foodSize;
+		}
+
+		if (rightKey) {
+			x[0] += foodSize;
+		}
+
+		if (upKey) {
+			y[0] -= foodSize;
+		}
+
+		if (downKey) {
+			y[0] += foodSize;
+		}
+		
+		for(int e = 0; e > 0; e++){
+			eagleX++;
+			collision();
+		}
+		
+	}
+
+	private void collision() {
+
+		for (int z = dots; z > 0; z--) {
+
+			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+				inGame = false;
+			}
+		}
+
+		if (y[0] >= height) {
+			inGame = false;
+		}
+
+		if (y[0] < 0) {
+			inGame = false;
+		}
+
+		if (x[0] >= width) {
+			inGame = false;
+		}
+
+		if (x[0] < 0) {
+			inGame = false;
+		}
+
+		if (!inGame) {
+			timer.stop();
+		}
+		
+		if (x[0] == eagleX){
+			inGame = false;
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if (inGame) {
+			eat();
+			collision();
+			move();
+		}
+
+		repaint();
+	}
+
+	private class TAdapter extends KeyAdapter {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+
+			int key = e.getKeyCode();
+
+			if ((key == KeyEvent.VK_LEFT) && (!rightKey)) {
+				leftKey = true;
+				upKey = false;
+				downKey = false;
+			}
+
+			if ((key == KeyEvent.VK_RIGHT) && (!leftKey)) {
+				rightKey = true;
+				upKey = false;
+				downKey = false;
+			}
+
+			if ((key == KeyEvent.VK_UP) && (!downKey)) {
+				upKey = true;
+				rightKey = false;
+				leftKey = false;
+			}
+
+			if ((key == KeyEvent.VK_DOWN) && (!upKey)) {
+				downKey = true;
+				rightKey = false;
+				leftKey = false;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param newPoints
+	 */
+	public static void setPoints(int newPoints) {
+		points = newPoints;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static int getPoints() {
+		return points;
+	}
+
+	
+	/**
+	 * 
+	 * @param appleXNew
+	 */
+	public static void setAppleX(int appleXNew) {
+		appleX = appleXNew;
+	}
+
+	
+	/**
+	 * 
+	 * @param appleYNew
+	 */
+	public static void setAppleY(int appleYNew) {
+		appleY = appleYNew;
+
+	}
+
+	/**
+	 * 
+	 * @param ratXNew
+	 */
+	public static void setRatX(int ratXNew) {
+		ratX = ratXNew;
+	}
+
+	/**
+	 * 
+	 * @param ratYNew
+	 */
+	public static void setRatY(int ratYNew) {
+		ratY = ratYNew;
+	}
+	
+	/**
+	 * 
+	 * @param eagleXNew
+	 */
+	public static void setEagleX (int eagleXNew){
+		eagleX = eagleXNew;
+	}
+	
+	/**
+	 * 
+	 * @param eagleYNew
+	 */
+	public static void setEagleY (int eagleYNew){
+		eagleY = eagleYNew;
+	}
+
+}
