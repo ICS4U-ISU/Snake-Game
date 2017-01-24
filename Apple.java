@@ -5,23 +5,11 @@ import sun.audio.AudioStream;
 
 @SuppressWarnings("serial")
 public class Apple extends Food {
+	static boolean firstPlayed = false;
 
 	public Apple(int currentPoints) {
 		super(currentPoints);
 	}
-
-//	public void spawnApple() {
-//		randomX();
-//		randomY();
-//		if (x != snakeX && y != snakeY) {
-//			// draw apple at x and y
-//			// repaint screen
-//		} else {
-//			randomX();
-//			randomY();
-//			spawnApple();
-//		}
-//	}
 
 	public static void appleEat() {
 		try {
@@ -30,7 +18,11 @@ public class Apple extends Food {
 			System.out.println("Error with playing sound.");
 			ex.printStackTrace();
 		}
-		AudioPlayer.player.start(appleSound);
+		if (firstPlayed == true) {
+			AudioPlayer.player.start(appleSound);
+		} else {
+			firstPlayed = true;
+		}
 		currentPoints = Board.getPoints();
 		Board.setPoints(currentPoints + pointsApple);
 		appleRandomizer();
@@ -42,6 +34,6 @@ public class Apple extends Food {
 
 		r = (int) (Math.random() * 10);
 		Board.setAppleY(((r * 50)));
-		
+
 	}
 }

@@ -5,25 +5,11 @@ import sun.audio.AudioStream;
 
 @SuppressWarnings("serial")
 public class Rat extends Food {
-	// Image of rat
-	// Audio of rat
+	static boolean firstPlayed = false;
 
 	public Rat(int currentPoints) {
 		super(currentPoints);
 	}
-
-//	public void spawnRat() {
-//		randomX();
-//		randomY();
-//		if (x != snakeX && y != snakeY) {
-//			// draw rat at x and y
-//			// repaint screen
-//		} else {
-//			randomX();
-//			randomY();
-//			spawnRat();
-//		}
-//	}
 
 	public static void ratEat() {
 		try {
@@ -32,18 +18,22 @@ public class Rat extends Food {
 			System.out.println("Error with playing sound.");
 			ex.printStackTrace();
 		}
-		AudioPlayer.player.start(ratSound);
+		if (firstPlayed == true) {
+			AudioPlayer.player.start(ratSound);
+		} else {
+			firstPlayed = true;
+		}
 		currentPoints = Board.getPoints();
 		Board.setPoints(currentPoints + pointsRat);
-		appleRandomizer();
+		ratRandomizer();
 	}
 
-	public static void appleRandomizer() {
+	public static void ratRandomizer() {
 		int r = (int) (Math.random() * 10);
-		Board.setAppleX(((r * 50)));
+		Board.setRatX(((r * 50)));
 
 		r = (int) (Math.random() * 10);
-		Board.setAppleY(((r * 50)));
-		
+		Board.setRatY(((r * 50)));
+
 	}
 }

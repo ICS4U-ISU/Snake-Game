@@ -10,17 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
 @SuppressWarnings("serial")
@@ -28,9 +24,8 @@ public class Board extends JPanel implements ActionListener {
 
 	private final int width = 1400;
 	private final int height = 750;
-	private final int appleSize = 50;
+	private final int foodSize = 50;
 	private final int maxBody = 900;
-	private final int randApple = 10;
 	private final int speed = 140;
 
 	private final int x[] = new int[maxBody];
@@ -47,20 +42,20 @@ public class Board extends JPanel implements ActionListener {
 	private boolean upKey = false;
 	private boolean downKey = false;
 	private boolean inGame = true;
+	private boolean ratSpawn = false;
 
 	private Timer timer;
 	private Image ball;
 	private Image apple;
 	private Image head;
 	private Image eagle;
+	private Image rat;
 
 	static AudioStream appleSound;
 	static AudioStream ratSound;
 
 	public static int points = 0;
 	public static String score = Integer.toString(points);
-	// public static BufferedImage image = null;
-	// image= ImageIO.read(TechISU.class.getResourceAsStream("/Eagle.jpg"));
 
 	Font myFont = new Font("Serif", Font.BOLD, 50);
 
@@ -92,6 +87,11 @@ public class Board extends JPanel implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		try {
+			rat = ImageIO.read(Board.class.getResourceAsStream("/rat.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initGame() {
@@ -104,6 +104,7 @@ public class Board extends JPanel implements ActionListener {
 		}
 
 		Apple.appleEat();
+		Rat.ratEat();
 
 		timer = new Timer(speed, this);
 		timer.start();
@@ -154,6 +155,10 @@ public class Board extends JPanel implements ActionListener {
 
 			g.drawImage(apple, appleX, appleY, this);
 
+			if (ratSpawn == true) {
+				g.drawImage(rat, ratX, ratY, this);
+			}
+
 			for (int z = 0; z < dots; z++) {
 				if (z == 0) {
 					g.drawImage(head, x[z], y[z], this);
@@ -181,11 +186,26 @@ public class Board extends JPanel implements ActionListener {
 		g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
 	}
 
-	private void apple() {
-
+	private void eat() {
 		if ((x[0] == appleX) && (y[0] == appleY)) {
 			dots++;
 			Apple.appleEat();
+			Random rand = new Random();
+			int ratChance = rand.nextInt(100);
+			if (ratChance < 21) {
+				ratSpawn = true;
+			} else {
+				if (ratSpawn == true) {
+					ratSpawn = true;
+				} else {
+					ratSpawn = false;
+				}
+			}
+		}
+		if ((x[0] == ratX) && (y[0] == ratY && ratSpawn == true)) {
+			dots++;
+			Rat.ratEat();
+			ratSpawn = false;
 		}
 	}
 
@@ -197,19 +217,19 @@ public class Board extends JPanel implements ActionListener {
 		}
 
 		if (leftKey) {
-			x[0] -= appleSize;
+			x[0] -= foodSize;
 		}
 
 		if (rightKey) {
-			x[0] += appleSize;
+			x[0] += foodSize;
 		}
 
 		if (upKey) {
-			y[0] -= appleSize;
+			y[0] -= foodSize;
 		}
 
 		if (downKey) {
-			y[0] += appleSize;
+			y[0] += foodSize;
 		}
 	}
 
@@ -247,7 +267,7 @@ public class Board extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (inGame) {
-			apple();
+			eat();
 			collision();
 			move();
 		}
@@ -298,12 +318,19 @@ public class Board extends JPanel implements ActionListener {
 
 	public static void setAppleX(int appleXNew) {
 		appleX = appleXNew;
-		
 	}
 
 	public static void setAppleY(int appleYNew) {
 		appleY = appleYNew;
 
+	}
+
+	public static void setRatX(int ratXNew) {
+		ratX = ratXNew;
+	}
+
+	public static void setRatY(int ratYNew) {
+		ratY = ratYNew;
 	}
 
 }

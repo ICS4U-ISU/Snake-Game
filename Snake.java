@@ -1,7 +1,4 @@
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
