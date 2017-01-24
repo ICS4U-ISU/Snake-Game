@@ -43,6 +43,7 @@ public class Board extends JPanel implements ActionListener {
 	private boolean downKey = false;
 	private boolean inGame = true;
 	private boolean ratSpawn = false;
+	private boolean start;
 
 	private Timer timer;
 	private Image ball;
@@ -130,16 +131,16 @@ public class Board extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 
-		g2d.drawImage(Eagle, 400, 50, 100, 100, this);
+		g2d.drawImage(Eagle, 30, 530, 100, 100, this);
 		g2d.drawImage(Snake, 30, 10, 80, 80, this);
 
 		g2d.setColor(Color.GREEN);
-		g2d.drawRect(30, 90, 1150, 580);// 590
+		g2d.drawRect(15, 90, 1200, 580);// 590
 		g2d.setColor(Color.RED);
 
 		// (?,?,width of line, angle)
-		g2d.drawLine(30, 530, 30, 670);
-		g2d.drawLine(1180, 530, 1180, 670);
+		g2d.drawLine(15, 530, 15, 670);
+		g2d.drawLine(1215, 530, 1215, 670);
 
 		g.setColor(Color.WHITE);
 		g.setFont(myFont);
@@ -152,6 +153,8 @@ public class Board extends JPanel implements ActionListener {
 	private void drawing(Graphics g) {
 
 		if (inGame) {
+			score = Integer.toString(points);
+			g.drawString(score, 950, 60);
 
 			g.drawImage(apple, appleX, appleY, this);
 
@@ -161,9 +164,9 @@ public class Board extends JPanel implements ActionListener {
 
 			for (int z = 0; z < dots; z++) {
 				if (z == 0) {
-					g.drawImage(head, x[z], y[z], this);
+					g.drawImage(head, x[z], y[z]+50, this);
 				} else {
-					g.drawImage(ball, x[z], y[z], this);
+					g.drawImage(ball, x[z], y[z]+50, this);
 				}
 			}
 
@@ -187,9 +190,10 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void eat() {
-		if ((x[0] == appleX) && (y[0] == appleY)) {
+		if ((x[0] == appleX) && (y[0] == appleY - 50)) {
 			dots++;
 			Apple.appleEat();
+			points = points + 50;
 			Random rand = new Random();
 			int ratChance = rand.nextInt(100);
 			if (ratChance < 21) {
@@ -202,10 +206,11 @@ public class Board extends JPanel implements ActionListener {
 				}
 			}
 		}
-		if ((x[0] == ratX) && (y[0] == ratY && ratSpawn == true)) {
+		if ((x[0] == ratX) && (y[0] == ratY - 50 && ratSpawn == true)) {
 			dots++;
 			Rat.ratEat();
 			ratSpawn = false;
+			points = points + 100;
 		}
 	}
 
@@ -235,6 +240,7 @@ public class Board extends JPanel implements ActionListener {
 
 	private void collision() {
 
+		//when the snake touches one of its joints it'll be game over
 		for (int z = dots; z > 0; z--) {
 
 			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
@@ -242,25 +248,28 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 
-		if (y[0] >= height) {
-			inGame = false;
-		}
 
-		if (y[0] < 0) {
-			inGame = false;
-		}
+			if (y[0] >= 585) { //bottom line
+				inGame = false;
+			}
 
-		if (x[0] >= width) {
-			inGame = false;
-		}
+			if (y[0] <= 49) { //top line 
+				inGame = false;
+			}
 
-		if (x[0] < 0) {
-			inGame = false;
-		}
+			if (x[0] >= 1180) { //right line
+				inGame = false;
+			}
 
-		if (!inGame) {
-			timer.stop();
-		}
+			if (x[0] <= 45.5) { // left line 
+				inGame = false;
+			}
+
+			if (!inGame) {
+				timer.stop();
+			}
+
+		
 	}
 
 	@Override

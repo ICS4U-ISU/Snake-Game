@@ -1,8 +1,7 @@
 
 @SuppressWarnings("serial")
 public class Obstacles extends NonMoving {
-	public Obstacles(int snakeX, int snakeY, int currentPoints) {
-		super(currentPoints);
+	public Obstacles() {
 	}
 
 	boolean visibility;

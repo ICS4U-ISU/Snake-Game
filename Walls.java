@@ -7,8 +7,7 @@ public class Walls extends NonMoving {
 	String wall = "image of wall";
 	AudioStream hitSound;
 
-	public Walls(int snakeX, int snakeY, int currentPoints) {
-		super(currentPoints);
+	public Walls() {
 	}
 	
 	public void hitWall() {

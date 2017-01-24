@@ -13,7 +13,6 @@ public class Food extends NonMoving {
 	static Clip ratSound;
 	
 
-	public Food(int currentPoints) {
-		super(currentPoints);
+	public Food() {
 	}
 }

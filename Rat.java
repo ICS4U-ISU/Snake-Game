@@ -1,17 +1,11 @@
-import java.io.FileInputStream;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
 
 @SuppressWarnings("serial")
 public class Rat extends Food {
 	static boolean firstPlayed = false;
 
-	public Rat(int currentPoints) {
-		super(currentPoints);
+	public Rat() {
 	}
 
 	public static void ratEat() {
@@ -28,8 +22,6 @@ public class Rat extends Food {
 		} else {
 			firstPlayed = true;
 		}
-		currentPoints = Board.getPoints();
-		Board.setPoints(currentPoints + pointsApple);
 		ratRandomizer();
 	}
 
@@ -39,6 +31,5 @@ public class Rat extends Food {
 
 		r = (int) (Math.random() * 10);
 		Board.setRatY(((r * 50)));
-
 	}
 }
