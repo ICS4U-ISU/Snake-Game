@@ -27,9 +27,19 @@ public class Rat extends Food {
 
 	public static void ratRandomizer() {
 		int r = (int) (Math.random() * 10);
-		Board.setRatX(((r * 50)));
-
+		int x = r * 50;
+		while (x < 45.5 || x > 1180) {
+			r = (int) (Math.random() * 10);
+			x = r * 50;
+		}
+		Board.setRatX(x);
 		r = (int) (Math.random() * 10);
-		Board.setRatY(((r * 50)));
+		int y = r * 50;
+		while (y < 49 || y > 585) {
+			r = (int) (Math.random() * 10);
+			y = r * 50;
+		}
+		Board.setRatY(y);
+
 	}
 }

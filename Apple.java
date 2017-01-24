@@ -29,15 +29,18 @@ public class Apple extends Food {
 	public static void appleRandomizer() {
 		int r = (int) (Math.random() * 10);
 		int x = r * 50;
-		while (x < 15 || x > 1200){
+		while (x < 45.5 || x > 1180) {
 			r = (int) (Math.random() * 10);
 			x = r * 50;
 		}
-		Board.setAppleX(((r * 50)));
-
+		Board.setAppleX(x);
 		r = (int) (Math.random() * 10);
-
-		Board.setAppleY(((r * 50)));
+		int y = r * 50;
+		while (y < 49 || y > 585) {
+			r = (int) (Math.random() * 10);
+			y = r * 50;
+		}
+		Board.setAppleY(y);
 
 	}
 }

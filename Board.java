@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -54,6 +57,7 @@ public class Board extends JPanel implements ActionListener {
 
 	static AudioStream appleSound;
 	static AudioStream ratSound;
+	Clip hitSound;
 
 	public static int points = 0;
 	public static String score = Integer.toString(points);
@@ -239,30 +243,43 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void collision() {
+		try {
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(Apple.class.getResource("Hit Sound.wav"));
+			hitSound = AudioSystem.getClip();
+			hitSound.open(audioIn);
+		} catch (Exception ex) {
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace();
+		}
 
 		//when the snake touches one of its joints it'll be game over
 		for (int z = dots; z > 0; z--) {
 
 			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
 				inGame = false;
+				hitSound.start();
 			}
 		}
 
 
 			if (y[0] >= 585) { //bottom line
 				inGame = false;
+				hitSound.start();
 			}
 
 			if (y[0] <= 49) { //top line 
 				inGame = false;
+				hitSound.start();
 			}
 
 			if (x[0] >= 1180) { //right line
 				inGame = false;
+				hitSound.start();
 			}
 
 			if (x[0] <= 45.5) { // left line 
 				inGame = false;
+				hitSound.start();
 			}
 
 			if (!inGame) {
@@ -326,20 +343,20 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public static void setAppleX(int appleXNew) {
-		appleX = appleXNew;
+		appleX = appleXNew + 50;
 	}
 
 	public static void setAppleY(int appleYNew) {
-		appleY = appleYNew;
+		appleY = appleYNew + 50;
 
 	}
 
 	public static void setRatX(int ratXNew) {
-		ratX = ratXNew;
+		ratX = ratXNew + 50;
 	}
 
 	public static void setRatY(int ratYNew) {
-		ratY = ratYNew;
+		ratY = ratYNew + 50;
 	}
 
 }
