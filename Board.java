@@ -37,8 +37,10 @@ public class Board extends JPanel implements ActionListener {
 	private final int y[] = new int[maxBody];
 
 	private int dots;
-	private int appleX;
-	private int appleY;
+	private static int appleX;
+	private static int appleY;
+	private static int ratX;
+	private static int ratY;
 
 	private boolean leftKey = false;
 	private boolean rightKey = true;
@@ -51,10 +53,9 @@ public class Board extends JPanel implements ActionListener {
 	private Image apple;
 	private Image head;
 	private Image eagle;
-	
+
 	static AudioStream appleSound;
 	static AudioStream ratSound;
-	
 
 	public static int points = 0;
 	public static String score = Integer.toString(points);
@@ -102,7 +103,7 @@ public class Board extends JPanel implements ActionListener {
 			y[z] = 50;
 		}
 
-		NonMoving.appleRandomizer();
+		Apple.appleEat();
 
 		timer = new Timer(speed, this);
 		timer.start();
@@ -182,9 +183,9 @@ public class Board extends JPanel implements ActionListener {
 
 	private void apple() {
 
-		if ((x[0] == NonMoving.randomX()) && (y[0] == NonMoving.randomY())) {
+		if ((x[0] == appleX) && (y[0] == appleY)) {
 			dots++;
-			NonMoving.appleRandomizer();
+			Apple.appleEat();
 		}
 	}
 
@@ -287,15 +288,22 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 
-	public static void setPoints(int pointsToAdd) {
-		points = points + pointsToAdd;
+	public static void setPoints(int newPoints) {
+		points = newPoints;
 	}
 
 	public static int getPoints() {
 		return points;
 	}
-	
-	public void playAppleSound(){
-		AudioPlayer.player.start(appleSound);
+
+	public static void setAppleX(int appleXNew) {
+		appleX = appleXNew;
+		
 	}
+
+	public static void setAppleY(int appleYNew) {
+		appleY = appleYNew;
+
+	}
+
 }

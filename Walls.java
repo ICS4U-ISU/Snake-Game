@@ -8,7 +8,7 @@ public class Walls extends NonMoving {
 	AudioStream hitSound;
 
 	public Walls(int snakeX, int snakeY, int currentPoints) {
-		super(snakeX, snakeY, currentPoints);
+		super(currentPoints);
 	}
 	
 	public void hitWall() {
@@ -22,14 +22,14 @@ public class Walls extends NonMoving {
 		}
 	}
 
-	public void spawnWall() {
-		if (x != snakeX && y != snakeY) {
-			// draw apple at x and y
-			// repaint screen
-		} else {
-			randomX();
-			randomY();
-			spawnWall();
-		}
-	}
+//	public void spawnWall() {
+//		if (x != snakeX && y != snakeY) {
+//			// draw apple at x and y
+//			// repaint screen
+//		} else {
+//			randomX();
+//			randomY();
+//			spawnWall();
+//		}
+//	}
 }
