@@ -3,13 +3,13 @@ import javax.sound.sampled.AudioSystem;
 
 @SuppressWarnings("serial")
 public class Apple extends Food {
+	/**
+	 * Variable that causes the sound to not play when the game is launched
+	 */
 	static boolean firstPlayed = false;
-	static int i = 0;
-
-	public Apple() {
-	}
 
 	public static void appleEat() {
+		// Gets apple sound ready
 		try {
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(Apple.class.getResource("Apple Sound.wav"));
 			appleSound = AudioSystem.getClip();
@@ -19,13 +19,15 @@ public class Apple extends Food {
 			ex.printStackTrace();
 		}
 		if (firstPlayed == true) {
-			appleSound.start();
+			appleSound.start(); // Plays apple sound
 		} else {
 			firstPlayed = true;
 		}
 		appleRandomizer();
 	}
-
+/**
+ * Method that gets a new X and Y value for the apple
+ */
 	public static void appleRandomizer() {
 		int r = (int) (Math.random() * 10);
 		int x = r * 50;

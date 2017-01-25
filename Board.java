@@ -20,50 +20,127 @@ import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import sun.audio.AudioStream;
-
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
-
+	/**
+	 * Width of the game panel
+	 */
 	private final int width = 1400;
+	/**
+	 * Height of the game panel
+	 */
 	private final int height = 750;
+
+	/**
+	 * Size of a section in the panel
+	 */
 	private final int foodSize = 50;
+	/**
+	 * Max length of the snake
+	 */
 	private final int maxBody = 900;
+	/**
+	 * Timer speed
+	 */
 	private final int speed = 140;
 
+	/**
+	 * An array that stores the snake's body
+	 */
 	private final int x[] = new int[maxBody];
+	/**
+	 * An array that stores the snake's body
+	 */
 	private final int y[] = new int[maxBody];
 
+	/**
+	 * Number of snake segments
+	 */
 	private int dots;
+	/**
+	 * Apple x-coordinate
+	 */
 	private static int appleX;
+	/**
+	 * Apple y-coordinate
+	 */
 	private static int appleY;
+	/**
+	 * Rat x-coordinate
+	 */
 	private static int ratX;
+	/**
+	 * Rat y-coordinate
+	 */
 	private static int ratY;
 
+	/**
+	 * If the left key is pressed
+	 */
 	private boolean leftKey = false;
+	/**
+	 * If the right key is pressed
+	 */
 	private boolean rightKey = true;
+	/**
+	 * If the up key is pressed
+	 */
 	private boolean upKey = false;
+	/**
+	 * If the down key is pressed
+	 */
 	private boolean downKey = false;
-	private boolean inGame = true;
-	private boolean ratSpawn = false;
-	private boolean start;
 
+	/**
+	 * If the player is alive
+	 */
+	private boolean inGame = true;
+
+	/**
+	 * If the rat is allowed the spawn
+	 */
+	private boolean ratSpawn = false;
+
+	/**
+	 * Game timer
+	 */
 	private Timer timer;
+	/**
+	 * Snake's body
+	 */
 	private Image ball;
+	/**
+	 * Snake's food
+	 */
 	private Image apple;
+	/**
+	 * Snake's head
+	 */
 	private Image head;
-	private Image eagle;
+	/**
+	 * The rat, also a food for the snake
+	 */
 	private Image rat;
 
-	static AudioStream appleSound;
-	static AudioStream ratSound;
-	Clip hitSound;
+	/**
+	 * Sound when the snake hits itself or a wall
+	 */
+	private Clip hitSound;
 
+	/**
+	 * Number of earned points
+	 */
 	public static int points = 0;
+	/**
+	 * String to display the score
+	 */
 	public static String score = Integer.toString(points);
 
 	Font myFont = new Font("Serif", Font.BOLD, 50);
 
+	/**
+	 * Sets settings for the board
+	 */
 	public Board() {
 
 		addKeyListener(new TAdapter());
@@ -75,6 +152,9 @@ public class Board extends JPanel implements ActionListener {
 		initGame();
 	}
 
+	/**
+	 * Method that holds all of the images
+	 */
 	private void images() {
 
 		try {
@@ -99,15 +179,18 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Starts the game
+	 */
 	private void initGame() {
-
+		// Sets the number of starting segments of the snake
 		dots = 3;
 
 		for (int z = 0; z < dots; z++) {
 			x[z] = 50 - z * 10;
 			y[z] = 50;
 		}
-		
+
 		Apple.appleEat();
 		Rat.ratEat();
 
@@ -115,6 +198,9 @@ public class Board extends JPanel implements ActionListener {
 		timer.start();
 	}
 
+	/**
+	 * Paints the board
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -154,6 +240,11 @@ public class Board extends JPanel implements ActionListener {
 
 	}
 
+	/**
+	 * Draws the snake and the food
+	 * 
+	 * @param g
+	 */
 	private void drawing(Graphics g) {
 
 		if (inGame) {
@@ -168,9 +259,9 @@ public class Board extends JPanel implements ActionListener {
 
 			for (int z = 0; z < dots; z++) {
 				if (z == 0) {
-					g.drawImage(head, x[z], y[z]+50, this);
+					g.drawImage(head, x[z], y[z] + 50, this);
 				} else {
-					g.drawImage(ball, x[z], y[z]+50, this);
+					g.drawImage(ball, x[z], y[z] + 50, this);
 				}
 			}
 
@@ -182,6 +273,11 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Display for when the snake dies
+	 * 
+	 * @param g
+	 */
 	private void gameOver(Graphics g) {
 
 		String msg = "Game Over";
@@ -193,11 +289,15 @@ public class Board extends JPanel implements ActionListener {
 		g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
 	}
 
+	/**
+	 * Method for when the snake eats something
+	 */
 	private void eat() {
 		if ((x[0] == appleX) && (y[0] == appleY - 50)) {
 			dots++;
 			Apple.appleEat();
-			points = points + 50;
+			points = points + 50; // Adds points for eating apple
+			// Sets if rat will spawn or not
 			Random rand = new Random();
 			int ratChance = rand.nextInt(100);
 			if (ratChance < 21) {
@@ -213,11 +313,14 @@ public class Board extends JPanel implements ActionListener {
 		if ((x[0] == ratX) && (y[0] == ratY - 50 && ratSpawn == true)) {
 			dots++;
 			Rat.ratEat();
-			ratSpawn = false;
-			points = points + 100;
+			ratSpawn = false; // Rat cannot spawn until this variable is changed
+			points = points + 100; // Adds points for eating rat
 		}
 	}
 
+	/**
+	 * The method that moves the snake
+	 */
 	private void move() {
 
 		for (int z = dots; z > 0; z--) {
@@ -242,7 +345,11 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Method that is run every move to see is the snake hit a wall or itself
+	 */
 	private void collision() {
+		// Prepares hit sound
 		try {
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(Apple.class.getResource("Hit Sound.wav"));
 			hitSound = AudioSystem.getClip();
@@ -252,7 +359,7 @@ public class Board extends JPanel implements ActionListener {
 			ex.printStackTrace();
 		}
 
-		//when the snake touches one of its joints it'll be game over
+		// when the snake touches one of its joints it'll be game over
 		for (int z = dots; z > 0; z--) {
 
 			if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
@@ -260,35 +367,36 @@ public class Board extends JPanel implements ActionListener {
 				hitSound.start();
 			}
 		}
+		// If the snake hits a wall
+		if (y[0] >= 585) { // bottom line
+			inGame = false;
+			hitSound.start();
+		}
 
+		if (y[0] <= 49) { // top line
+			inGame = false;
+			hitSound.start();
+		}
 
-			if (y[0] >= 585) { //bottom line
-				inGame = false;
-				hitSound.start();
-			}
+		if (x[0] >= 1180) { // right line
+			inGame = false;
+			hitSound.start();
+		}
 
-			if (y[0] <= 49) { //top line 
-				inGame = false;
-				hitSound.start();
-			}
+		if (x[0] <= 45.5) { // left line
+			inGame = false;
+			hitSound.start();
+		}
 
-			if (x[0] >= 1180) { //right line
-				inGame = false;
-				hitSound.start();
-			}
+		if (!inGame) {
+			timer.stop();
+		}
 
-			if (x[0] <= 45.5) { // left line 
-				inGame = false;
-				hitSound.start();
-			}
-
-			if (!inGame) {
-				timer.stop();
-			}
-
-		
 	}
 
+	/**
+	 * A method that is ran every time something happens
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -301,6 +409,12 @@ public class Board extends JPanel implements ActionListener {
 		repaint();
 	}
 
+	/**
+	 * KeyAdapter class for listening for key presses
+	 * 
+	 * @author ajayg
+	 *
+	 */
 	private class TAdapter extends KeyAdapter {
 
 		@Override
@@ -334,27 +448,37 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 
-	public static void setPoints(int newPoints) {
-		points = newPoints;
-	}
-
-	public static int getPoints() {
-		return points;
-	}
-
+	/**
+	 * Sets a new apple X value
+	 */
 	public static void setAppleX(int appleXNew) {
 		appleX = appleXNew + 50;
 	}
 
+	/**
+	 * Sets a new apple Y value
+	 * 
+	 * @param appleYNew
+	 */
 	public static void setAppleY(int appleYNew) {
 		appleY = appleYNew + 50;
 
 	}
 
+	/**
+	 * Sets a new rat X value
+	 * 
+	 * @param ratXNew
+	 */
 	public static void setRatX(int ratXNew) {
 		ratX = ratXNew + 50;
 	}
 
+	/**
+	 * Sets a new rat Y value
+	 * 
+	 * @param ratYNew
+	 */
 	public static void setRatY(int ratYNew) {
 		ratY = ratYNew + 50;
 	}

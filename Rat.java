@@ -3,12 +3,16 @@ import javax.sound.sampled.AudioSystem;
 
 @SuppressWarnings("serial")
 public class Rat extends Food {
+	/**
+	 * Variable that causes the sound to not play when the game is launched
+	 */
 	static boolean firstPlayed = false;
 
-	public Rat() {
-	}
-
+	/**
+	 * Method for when the snake eats a rat
+	 */
 	public static void ratEat() {
+		// Gets the rat sound ready
 		try {
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(Rat.class.getResource("Rat Sound.wav"));
 			ratSound = AudioSystem.getClip();
@@ -18,13 +22,16 @@ public class Rat extends Food {
 			ex.printStackTrace();
 		}
 		if (firstPlayed == true) {
-			ratSound.start();
+			ratSound.start(); // Plays rat sound
 		} else {
 			firstPlayed = true;
 		}
 		ratRandomizer();
 	}
 
+	/**
+	 * Method that gets a new X and Y value for the rat
+	 */
 	public static void ratRandomizer() {
 		int r = (int) (Math.random() * 10);
 		int x = r * 50;
