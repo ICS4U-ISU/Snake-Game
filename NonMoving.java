@@ -1,29 +1,35 @@
-import java.util.Random;
 
 @SuppressWarnings("serial")
 public class NonMoving extends Board {
-	static int x;
-	static int y;
-	boolean collision;
-	int width = 1200;
-	static int height = 690;
 
-	public NonMoving() {
-		Random rand = new Random();
-		x = rand.nextInt(width);
-		y = rand.nextInt(height);
-		collision = false;
-	}
-
-	public static int randomX() {
-		Random rand = new Random();
-		int x = rand.nextInt(height);
+	/**
+	 * Creates a random X value
+	 * 
+	 * @return A random X value
+	 */
+	public static int randomizerX() {
+		int r = (int) (Math.random() * 10);
+		int x = r * 50;
+		while (x < 45.5 || x > 1180) {
+			r = (int) (Math.random() * 10);
+			x = r * 50;
+		}
 		return x;
 	}
 
-	public static int randomY() {
-		Random rand = new Random();
-		int y = rand.nextInt(height);
+	/**
+	 * Creates a random Y value
+	 * 
+	 * @return A random Y value
+	 */
+	public static int randomizerY() {
+		int r = (int) (Math.random() * 10);
+		int y = r * 50;
+		while (y < 49 || y > 585) {
+			r = (int) (Math.random() * 10);
+			y = r * 50;
+		}
 		return y;
 	}
+
 }

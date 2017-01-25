@@ -8,6 +8,9 @@ public class Apple extends Food {
 	 */
 	static boolean firstPlayed = false;
 
+	/**
+	 * Method for when the snake eats an apple
+	 */
 	public static void appleEat() {
 		// Gets apple sound ready
 		try {
@@ -23,26 +26,9 @@ public class Apple extends Food {
 		} else {
 			firstPlayed = true;
 		}
-		appleRandomizer();
-	}
-/**
- * Method that gets a new X and Y value for the apple
- */
-	public static void appleRandomizer() {
-		int r = (int) (Math.random() * 10);
-		int x = r * 50;
-		while (x < 45.5 || x > 1180) {
-			r = (int) (Math.random() * 10);
-			x = r * 50;
-		}
+		int x = randomizerX();
 		Board.setAppleX(x);
-		r = (int) (Math.random() * 10);
-		int y = r * 50;
-		while (y < 49 || y > 585) {
-			r = (int) (Math.random() * 10);
-			y = r * 50;
-		}
+		int y = randomizerY();
 		Board.setAppleY(y);
-
 	}
 }

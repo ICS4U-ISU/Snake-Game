@@ -244,6 +244,7 @@ public class Board extends JPanel implements ActionListener {
 	 * Draws the snake and the food
 	 * 
 	 * @param g
+	 *            The board
 	 */
 	private void drawing(Graphics g) {
 
@@ -277,6 +278,7 @@ public class Board extends JPanel implements ActionListener {
 	 * Display for when the snake dies
 	 * 
 	 * @param g
+	 *            The board
 	 */
 	private void gameOver(Graphics g) {
 
@@ -411,8 +413,6 @@ public class Board extends JPanel implements ActionListener {
 
 	/**
 	 * KeyAdapter class for listening for key presses
-	 * 
-	 * @author ajayg
 	 *
 	 */
 	private class TAdapter extends KeyAdapter {
@@ -450,6 +450,9 @@ public class Board extends JPanel implements ActionListener {
 
 	/**
 	 * Sets a new apple X value
+	 * 
+	 * @param appleXNew
+	 *            The new apple Y value
 	 */
 	public static void setAppleX(int appleXNew) {
 		appleX = appleXNew + 50;
@@ -459,6 +462,7 @@ public class Board extends JPanel implements ActionListener {
 	 * Sets a new apple Y value
 	 * 
 	 * @param appleYNew
+	 *            The new apple Y value
 	 */
 	public static void setAppleY(int appleYNew) {
 		appleY = appleYNew + 50;
@@ -469,6 +473,7 @@ public class Board extends JPanel implements ActionListener {
 	 * Sets a new rat X value
 	 * 
 	 * @param ratXNew
+	 *            The new rat X value
 	 */
 	public static void setRatX(int ratXNew) {
 		ratX = ratXNew + 50;
@@ -478,6 +483,7 @@ public class Board extends JPanel implements ActionListener {
 	 * Sets a new rat Y value
 	 * 
 	 * @param ratYNew
+	 *            The new rat Y value
 	 */
 	public static void setRatY(int ratYNew) {
 		ratY = ratYNew + 50;
