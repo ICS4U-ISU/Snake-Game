@@ -21,7 +21,8 @@ public class Snake extends JFrame {
 	/**
 	 * Main method for starting the game
 	 * 
-	 * @param args args
+	 * @param args
+	 *            An array are arguments
 	 */
 	public static void main(String[] args) {
 

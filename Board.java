@@ -34,7 +34,7 @@ public class Board extends JPanel implements ActionListener {
 	/**
 	 * Size of a section in the panel
 	 */
-	private final int foodSize = 50;
+	private final static int foodSize = 50;
 	/**
 	 * Max length of the snake
 	 */
@@ -260,9 +260,9 @@ public class Board extends JPanel implements ActionListener {
 
 			for (int z = 0; z < dots; z++) {
 				if (z == 0) {
-					g.drawImage(head, x[z], y[z] + 50, this);
+					g.drawImage(head, x[z], y[z] + foodSize, this);
 				} else {
-					g.drawImage(ball, x[z], y[z] + 50, this);
+					g.drawImage(ball, x[z], y[z] + foodSize, this);
 				}
 			}
 
@@ -286,16 +286,16 @@ public class Board extends JPanel implements ActionListener {
 		Font small = new Font("Helvetica", Font.BOLD, 14);
 		FontMetrics metr = getFontMetrics(small);
 
-		g.setColor(Color.BLACK);
+		g.setColor(Color.WHITE);
 		g.setFont(small);
-		g.drawString(msg, (width - metr.stringWidth(msg)) / 2, height / 2);
+		g.drawString(msg, (width - metr.stringWidth(msg)) / 2 - 80, height / 2);
 	}
 
 	/**
 	 * Method for when the snake eats something
 	 */
 	private void eat() {
-		if ((x[0] == appleX) && (y[0] == appleY - 50)) {
+		if ((x[0] == appleX) && (y[0] == appleY - foodSize)) {
 			dots++;
 			Apple.appleEat();
 			points = points + 50; // Adds points for eating apple
@@ -312,7 +312,7 @@ public class Board extends JPanel implements ActionListener {
 				}
 			}
 		}
-		if ((x[0] == ratX) && (y[0] == ratY - 50 && ratSpawn == true)) {
+		if ((x[0] == ratX) && (y[0] == ratY - foodSize && ratSpawn == true)) {
 			dots++;
 			Rat.ratEat();
 			ratSpawn = false; // Rat cannot spawn until this variable is changed
@@ -455,7 +455,7 @@ public class Board extends JPanel implements ActionListener {
 	 *            The new apple Y value
 	 */
 	public static void setAppleX(int appleXNew) {
-		appleX = appleXNew + 50;
+		appleX = appleXNew + foodSize;
 	}
 
 	/**
@@ -465,7 +465,7 @@ public class Board extends JPanel implements ActionListener {
 	 *            The new apple Y value
 	 */
 	public static void setAppleY(int appleYNew) {
-		appleY = appleYNew + 50;
+		appleY = appleYNew + foodSize;
 
 	}
 
@@ -476,7 +476,7 @@ public class Board extends JPanel implements ActionListener {
 	 *            The new rat X value
 	 */
 	public static void setRatX(int ratXNew) {
-		ratX = ratXNew + 50;
+		ratX = ratXNew + foodSize;
 	}
 
 	/**
@@ -486,7 +486,7 @@ public class Board extends JPanel implements ActionListener {
 	 *            The new rat Y value
 	 */
 	public static void setRatY(int ratYNew) {
-		ratY = ratYNew + 50;
+		ratY = ratYNew + foodSize;
 	}
 
 }
