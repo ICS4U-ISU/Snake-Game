@@ -1,3 +1,9 @@
+// Team SNAP
+// Pranav G, Maryam S, Ajay G and Jennifer N.
+// Snake Game
+// This program is a reimagining of the classic game: "Snake"
+// 25 January 2017
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
@@ -7,7 +13,7 @@ public class Snake extends JFrame {
 	 * Sets basic settings for the game board that the game will run in
 	 */
 	public Snake() {
-
+		// adds new board and packs it
 		add(new Board());
 
 		setResizable(false);
