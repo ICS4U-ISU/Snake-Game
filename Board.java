@@ -148,7 +148,7 @@ public class Board extends JPanel implements ActionListener {
 	 * Sets settings for the board
 	 */
 	public Board() {
-
+		// Make the board and call the snake and get it to move
 		addKeyListener(new TAdapter());
 		setBackground(Color.BLACK);
 		setFocusable(true);
@@ -162,22 +162,25 @@ public class Board extends JPanel implements ActionListener {
 	 * Method that holds all of the images
 	 */
 	private void images() {
-
+		// setting the snake body image
 		try {
 			ball = ImageIO.read(Board.class.getResourceAsStream("/dot.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// setting the apple image
 		try {
 			apple = ImageIO.read(Board.class.getResourceAsStream("/apple.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// setting the snake head image
 		try {
 			head = ImageIO.read(Board.class.getResourceAsStream("/head.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// setting the rat image
 		try {
 			rat = ImageIO.read(Board.class.getResourceAsStream("/rat.png"));
 		} catch (IOException e) {
@@ -210,26 +213,28 @@ public class Board extends JPanel implements ActionListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+		// initiailze the drawing component
 		drawing(g);
 
 		Graphics2D g2d = (Graphics2D) g;
 		Image Eagle = null;
+		// setting the eagle image
 		try {
 			Eagle = ImageIO.read(Board.class.getResourceAsStream("/eagle.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image Snake = null;
+		// setting the snake image
 		try {
 			Snake = ImageIO.read(Board.class.getResourceAsStream("/snake.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		// drawing all the images
 		g2d.drawImage(Eagle, 30, 530, 100, 100, this);
 		g2d.drawImage(Snake, 30, 10, 80, 80, this);
-
+		// set background color to green to draw the rectangle
 		g2d.setColor(Color.GREEN);
 		g2d.drawRect(15, 90, 1200, 580);// 590
 		g2d.setColor(Color.RED);
@@ -237,7 +242,7 @@ public class Board extends JPanel implements ActionListener {
 		// (?,?,width of line, angle)
 		g2d.drawLine(15, 530, 15, 670);
 		g2d.drawLine(1215, 530, 1215, 670);
-
+		// change font to the chosen one
 		g.setColor(Color.WHITE);
 		g.setFont(myFont);
 		g.drawString("Snake Game: ", 130, 60);
@@ -256,14 +261,15 @@ public class Board extends JPanel implements ActionListener {
 
 		if (inGame) {
 			score = Integer.toString(points);
+			// draws the scor on the main screen
 			g.drawString(score, 950, 60);
 
 			g.drawImage(apple, appleX, appleY, this);
-
+			// if the random picks the rat spawn as true then the rat is drawn
 			if (ratSpawn == true) {
 				g.drawImage(rat, ratX, ratY, this);
 			}
-
+			// starts srawing the snake
 			for (int z = 0; z < dots; z++) {
 				if (z == 0) {
 					g.drawImage(head, x[z], y[z] + foodSize, this);
@@ -275,7 +281,7 @@ public class Board extends JPanel implements ActionListener {
 			Toolkit.getDefaultToolkit().sync();
 
 		} else {
-
+			// if the snake dies then the game over method is called
 			gameOver(g);
 		}
 	}
@@ -289,7 +295,7 @@ public class Board extends JPanel implements ActionListener {
 	private void gameOver(Graphics g) {
 
 		String msg = "Game Over";
-		Font small = new Font("Helvetica", Font.BOLD, 14);
+		Font small = new Font("Helvetica", Font.BOLD, 25);
 		FontMetrics metr = getFontMetrics(small);
 
 		g.setColor(Color.WHITE);
@@ -308,6 +314,7 @@ public class Board extends JPanel implements ActionListener {
 			// Sets if rat will spawn or not
 			Random rand = new Random();
 			int ratChance = rand.nextInt(100);
+			// checks if the rat was spwaned or not in order to efficiently add the scores
 			if (ratChance < 21) {
 				ratSpawn = true;
 			} else {
@@ -335,7 +342,7 @@ public class Board extends JPanel implements ActionListener {
 			x[z] = x[(z - 1)];
 			y[z] = y[(z - 1)];
 		}
-
+		// keylistener for each key
 		if (leftKey) {
 			x[0] -= foodSize;
 		}
@@ -407,7 +414,7 @@ public class Board extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		// checks with every method ebery time something happens in the game
 		if (inGame) {
 			eat();
 			collision();
@@ -427,25 +434,25 @@ public class Board extends JPanel implements ActionListener {
 		public void keyPressed(KeyEvent e) {
 
 			int key = e.getKeyCode();
-
+			// keylistener for the left key
 			if ((key == KeyEvent.VK_LEFT) && (!rightKey)) {
 				leftKey = true;
 				upKey = false;
 				downKey = false;
 			}
-
+			// key listener for the right key
 			if ((key == KeyEvent.VK_RIGHT) && (!leftKey)) {
 				rightKey = true;
 				upKey = false;
 				downKey = false;
 			}
-
+			// key listener for the up key
 			if ((key == KeyEvent.VK_UP) && (!downKey)) {
 				upKey = true;
 				rightKey = false;
 				leftKey = false;
 			}
-
+			// keylistener for the down key
 			if ((key == KeyEvent.VK_DOWN) && (!upKey)) {
 				downKey = true;
 				rightKey = false;
