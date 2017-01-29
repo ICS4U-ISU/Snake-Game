@@ -1,6 +1,7 @@
 // Team Snap
 // Pranav G, Maryam S, Ajay G and Jennifer N.
 // Snake Game
+// ISU
 // This program is a reimagining of the classic game: "Snake"
 // 25 January 2017
 
