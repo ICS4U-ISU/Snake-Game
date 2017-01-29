@@ -1,3 +1,9 @@
+
+// Team Snap
+// Pranav G, Maryam S, Ajay G and Jennifer N.
+// Snake Game
+// This program is a reimagining of the classic game: "Snake"
+// 25 January 2017
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
@@ -26,6 +32,7 @@ public class Apple extends Food {
 		} else {
 			firstPlayed = true;
 		}
+		// sets the applce in its place after its been eaten
 		int x = randomizerX();
 		Board.setAppleX(x);
 		int y = randomizerY();
